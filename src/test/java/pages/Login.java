@@ -12,7 +12,7 @@ public class Login  extends TestBase{
 	}
 	
 	// Locators
-	By userName = By.cssSelector("#user-name");
+	public By userName = By.cssSelector("#user-name");
 	By password = By.cssSelector("#password");
 	By loginButton = By.cssSelector("#login-button");
 	By logo = By.cssSelector(".login_logo");
@@ -25,6 +25,7 @@ public class Login  extends TestBase{
 		driver.findElement(userName).sendKeys("standard_user");
 		driver.findElement(password).sendKeys("secret_sauce");
 		driver.findElement(loginButton).click();	
+		
 	}
 	
 	// InvalidLogin 
