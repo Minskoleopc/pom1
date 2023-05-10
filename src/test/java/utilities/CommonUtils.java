@@ -1,142 +1,141 @@
 package utilities;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import base.TestBase;
 
-public class CommonUtils  extends TestBase{
-	
-	
+public class CommonUtils extends TestBase {
+
 	public CommonUtils(WebDriver driver) {
 		TestBase.driver = driver;
 	}
-	
+
 	// getPageTitle()
-	
 	public String getPageTitle() {
 		try {
-			System.out.println("The title f page is "+ driver.getTitle());
+			System.out.println("The title f page is " + driver.getTitle());
 			return driver.getTitle();
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			throw new Error("title not found");
 		}
 	}
-	
-	// getElement 
-	
+
+	// getElement
+
 	public WebElement getElement(By selector) {
-		
 		try {
 			return driver.findElement(selector);
-		}
-		catch(Exception NoSuchElementException) {
+		} catch (Exception NoSuchElementException) {
 			throw new Error(" element not founds");
-			//return null;
+			// return null;
 		}
-	
+
 	}
-	
+
 	// sendKeys
-	public void SendKeys(String text ,By selector ) {
-		
+	public void SendKeys(String text, By selector) {
+
 		try {
 			clearText(selector);
-			getElement(selector).sendKeys(text);	;
-		}
-		catch(Exception NoSuchElementException) {
+			getElement(selector).sendKeys(text);
+			;
+		} catch (Exception NoSuchElementException) {
 			throw new Error(" element not founds");
 		}
 
 	}
-	
-	// 
-	
-	public void clearText(By selector ) {
-		
+
+	// clear text()
+
+	public void clearText(By selector) {
+
 		try {
-			getElement(selector).clear();;	;
-		}
-		catch(Exception NoSuchElementException) {
+			getElement(selector).clear();
+			;
+			;
+		} catch (Exception NoSuchElementException) {
 			throw new Error(" element not founds");
 		}
 
 	}
+
+	// wait for element to be visible
+
+	public void waitForElementVisible(By selector, Duration timeout) {
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
+
+	}
+
+	// element to be clickable
+
+	public void waitForElementToBeClickable(By selector, Duration timeout) {
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		wait.until(ExpectedConditions.elementToBeClickable(selector));
+
+	}
+
+	// window Handle
+
+	public static void switchToWindow(WebDriver driver, String windowHandle) {
+		driver.switchTo().window(windowHandle);
+	}
 	
 	
-	// switch to Alert()
+	// scrollIntoView
 	
+	public static void scrollIntoView(WebDriver driver , By selector) {
+		WebElement e = driver.findElement(selector);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String script = "arguments[0].scrollIntoView();";
+		js.executeScript(script, e);
+		
+	}
 	
-	// switch to Iframe()
+	// waitforPagetoload
 	
+	public static void waitForPagetoLoad(WebDriver driver, Duration timeout) {
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		wait.until(ExpectedConditions.jsReturnsValue("return document.readyState === 'completed';"));
+		
+	}
 	
-	// wait()
+	public static void takeScreenShot(WebDriver driver , String filepath) throws IOException {
+		TakesScreenshot ts = (TakesScreenshot)driver;
+		File src = ts.getScreenshotAs(OutputType.FILE);
+		File des = new File(filepath);
+		FileUtils.copyFile(src, des);
+		
+	}
 	
+	// To switch to the iframe using name or id
+	// how can we manage 3 in one utility
 	
-	// fluent wait()
+	public static void switchToIframe(WebDriver driver , String idValue) {
+		driver.switchTo().frame(idValue);	
+	}
 	
+	// Drop down  --- select tagName
 	
-	// maximum()
+	// how can we manage 3 in one utility
 	
-	
-	// findElements 
-	
-	
-	// isDisplayed()
-	
-	
-	// isSelected()
-	
-	
-	// isEndabled()
-	
-	
-	// Drop Down()
-	
-	
-	// radioButton()
-	
-	
-	// windowHandles()
-	
-	
-	// screenShot()
-	
-	
-	// Actions
-	
-	
-	// Click()
-	
-	
-	// Navigate to pages()
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public static void selectByText(WebDriver driver , By selector , String text ) {
+		Select ss = new Select(driver.findElement(selector));
+		ss.selectByVisibleText(text);
+	}
 	
 	
 
